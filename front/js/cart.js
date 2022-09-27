@@ -1,4 +1,5 @@
-
+const nouveau = localStorage.getItem('price');
+console.log(nouveau);
 
 
 
