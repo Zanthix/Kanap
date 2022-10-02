@@ -35,23 +35,29 @@ fetch(url)
       document.querySelector('#colors').innerHTML = option;
       
 
-
+      //Stockage des valeurs indiquées par l'utilisateur lors de "l'ajout au panier"
       document.querySelector('#addToCart').addEventListener('click', () =>{
         const color = getValueFromField('colors');
         const quantity = parseInt(getValueFromField('quantity'));
         console.log(color,quantity);
-        const product = {id, color, quantity}        
+        const product = {id, color, quantity};
+        console.log(product);        
         let products = JSON.parse(localStorage.getItem('products'));
+        console.log(products);
+        let index = null;
         if (products === null) {
           products = [];
-        }
-        for (let i = 0; i <products.length; i++) {
-          if (products[i].id === id && products[i].color === color){
-            console.log('Présent');
-            products[i].quantity += quantity;
-          }else{
-            console.log('Absent');
+          products.push(product);
+        }else{
+          for (let i = 0; i < (products.length); i++) {
+            if (products[i].id === id && products[i].color === color){
+              index = i;
+            }
+          }
+          if(index === null){
             products.push(product);
+          }else{
+            products[index].quantity += quantity;
           }
         }
         localStorage.setItem('products', JSON.stringify(products));

@@ -1,5 +1,5 @@
-const nouveau = localStorage.getItem('price');
-console.log(nouveau);
+//let products = JSON.parse(localStorage.getItem('products'));
+//console.log(products);
 
 
 
