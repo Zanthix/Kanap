@@ -1,20 +1,22 @@
 let parameters = new URLSearchParams(window.location.search);
 const id = parameters.get('id');
+if(id === null){
+  window.location.replace("index.html");
+}
 console.log(id);
 let url = `http://localhost:3000/api/products/${id}`;
 console.log(url);
 
 
-
 fetch(url)   
-  .then(response => response.json())
+  .then(response => {
+    if (!response.ok){
+      window.location.replace("index.html");
+    }
+    return response.json()
+  } )
   .then(data => {
       console.log(data);
-      //Check si l'id de la barre recherche correspond à l'id du produit
-      if(data._id != id){
-        console.log("ERREUR");
-        return('Id non valide');
-      }
       //Création des différentes variables à injecter dans le DOM
       let option = `<option value="">--SVP, choisissez une couleur --</option>`;
       let picture = `<img src="${data.imageUrl}" alt="${data.altTxt}"> `;
@@ -63,7 +65,7 @@ fetch(url)
         localStorage.setItem('products', JSON.stringify(products));
       })
   }).catch(error => {console.log(error)});
-
+  
 const getValueFromField = (id) => {
   return document.getElementById(id).value;
 }
