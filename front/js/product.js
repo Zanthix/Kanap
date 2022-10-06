@@ -69,25 +69,3 @@ fetch(url)
 const getValueFromField = (id) => {
   return document.getElementById(id).value;
 }
-
-
-
-
-
-
-//         <div class="item__img">
-           //<!--  <img src="../images/logo.png" alt="Photographie d'un canapé"> --> 
-        //    </div>
-
-             // <div class="item__content__titlePrice">
-              //  <h1 id="title"><!-- Nom du produit --></h1>
-               // <p>Prix : <span id="price"><!-- 42 --></span>€</p>
-             // </div>
-
-              //  <p id="description"><!-- Dis enim malesuada risus sapien gravida nulla nisl arcu. --></p>
-
-             //     <select name="color-select" id="colors">
-                     // <option value="">--SVP, choisissez une couleur --</option>
-//<!--                       <option value="vert">vert</option>
-                     // <option value="blanc">blanc</option> -->
-                  //</select>

@@ -9,8 +9,6 @@ for (let items of products){
   console.log(totalItems);
 }
 
-const errors = "";
-
 //Gestion du panier
 let price = 0;
 let affichage = "";
@@ -57,34 +55,66 @@ const display = async() => {
   })}
 }
 
+//Messages d'erreur du formulaire
+document.querySelector('#firstName').addEventListener('change', () => {
+  let check = "";
+  let valeur = document.getElementById('firstName').value;
+  if(valeur.match(/[0-9&"'(_ç)=]/)){
+    check += `Erreur dans le prénom`;
+    document.querySelector('#firstNameErrorMsg').innerHTML = check;
+  }else{
+    check = "";
+    document.querySelector('#firstNameErrorMsg').innerHTML = check;
+  }
+})
+document.querySelector('#lastName').addEventListener('change', () => {
+  let check = "";
+  let valeur = document.getElementById('lastName').value;
+  if(valeur.match(/[0-9&"'(_ç)=]/)){
+    check += 'Erreur dans le nom';
+    document.querySelector('#lastNameErrorMsg').innerHTML = check;
+  }else{
+    check = "";
+    document.querySelector('#lastNameErrorMsg').innerHTML = check;
+  }
+})
+document.querySelector('#adress').addEventListener('change', () => {
+  let check = "";
+  let valeur = document.getElementById('address').value;
+  if(valeur.match(/["(_)=]/)){
+    check += `Erreur dans l'adresse`;
+    document.querySelector('#addressErrorMsg').innerHTML = check;
+  }else{
+    check = "";
+    document.querySelector('#adressErrorMsg').innerHTML = check;
+  }
+})
+document.querySelector('#city').addEventListener('change', () => {
+  let check = "";
+  let valeur = document.getElementById('city').value;
+  if(valeur.match(/[0-9&"(_)=]/)){
+    check += `Erreur dans le nom de la ville`;
+    document.querySelector('#cityErrorMsg').innerHTML = check;
+  }else{
+    check = "";
+    document.querySelector('#cityErrorMsg').innerHTML = check;
+  }
+})
+document.querySelector('#email').addEventListener('change', () => {
+  let check = "";
+  let valeur = document.getElementById('email').value;
+  if(valeur.match(/[@.]/)){
+    check = "";
+    document.querySelector('#emailErrorMsg').innerHTML = check;
+  }else{  
+    check += `Erreur dans l'email`;
+    document.querySelector('#emailErrorMsg').innerHTML = check;
+  }
+})
+
 
 /*document.querySelectorAll('.itemQuantity').forEach(item => {
       addEventListener('change', (e) => {
         console.log(e.target.value);
       })
     })*/
-     
-              //<p id="firstNameErrorMsg"><!-- ci est un message d'erreur --></p>
-
-/*<!--  <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
-                <div class="cart__item__img">
-                  <img src="../images/product01.jpg" alt="Photographie d'un canapé">
-                </div>
-                <div class="cart__item__content">
-                  <div class="cart__item__content__description">
-                    <h2>Nom du produit</h2>
-                    <p>Vert</p>
-                    <p>42,00 €</p>
-                  </div>
-                  <div class="cart__item__content__settings">
-                    <div class="cart__item__content__settings__quantity">
-                      <p>Qté : </p>
-                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
-                    </div>
-                    <div class="cart__item__content__settings__delete">
-                      <p class="deleteItem">Supprimer</p>
-                    </div>
-                  </div>
-                </div>
-              </article> -->*/
-         //<p>Total (<span id="totalQuantity"><!-- 2 --></span> articles) : <span id="totalPrice"><!-- 84,00 --></span> €</p>
