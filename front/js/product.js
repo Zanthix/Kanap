@@ -10,6 +10,7 @@ console.log(url);
 
 fetch(url)   
   .then(response => {
+    //Vérification d'id de produit et si non conforme retour à la page d'accueil
     if (!response.ok){
       window.location.replace("index.html");
     }
