@@ -3,9 +3,7 @@ const id = parameters.get('id');
 if(id === null){
   window.location.replace("index.html");
 }
-console.log(id);
 let url = `http://localhost:3000/api/products/${id}`;
-console.log(url);
 
 
 fetch(url)   
@@ -17,7 +15,6 @@ fetch(url)
     return response.json()
   } )
   .then(data => {
-      console.log(data);
       //Création des différentes variables à injecter dans le DOM
       let option = `<option value="">--SVP, choisissez une couleur --</option>`;
       let picture = `<img src="${data.imageUrl}" alt="${data.altTxt}"> `;
@@ -42,11 +39,8 @@ fetch(url)
       document.querySelector('#addToCart').addEventListener('click', () =>{
         const color = getValueFromField('colors');
         const quantity = parseInt(getValueFromField('quantity'));
-        console.log(color,quantity);
-        const product = {id, color, quantity};
-        console.log(product);        
+        const product = {id, color, quantity};      
         let products = JSON.parse(localStorage.getItem('products'));
-        console.log(products);
         let index = null;
         if (products === null) {
           products = [];

@@ -1,11 +1,9 @@
 //Récupération du local Storage
 let products = JSON.parse(localStorage.getItem("products"));
-console.log(products);
 if(products === null){
   window.location.replace('index.html');
 }
 const productIds = products.map((product) => product.id);
-console.log(productIds);
 const productsWithPrice = [];
 
 //Comptage du nombre total d'objets
@@ -20,7 +18,6 @@ let price = 0;
 //Affichage du contenu de la page quand tout est chargé
 document.addEventListener("DOMContentLoaded", () => {
   display();
-  console.log(price);
 });
 
 
@@ -59,9 +56,7 @@ const display = () => {
             </div>
             </article>`;
           price += product.price * storedProduct.quantity;
-          console.log(storedProduct);
       }
-      console.log(productsWithPrice);
       //Injection des différentes variables dans le DOM
       document.querySelector("#totalQuantity").innerHTML = totalItems;
       document.querySelector("#totalPrice").innerHTML = price;
@@ -75,9 +70,8 @@ const display = () => {
           const color = article.dataset.color;
           const index = products.findIndex(item => id === item.id && color === item.color);
           products[index].quantity = newQuantity;
-          console.log(products);
           calculatePriceAndQuantity();
-          //localStorage.setItem('products', JSON.stringify(products));
+          localStorage.setItem('products', JSON.stringify(products));
         });
       });
      //Bouton delete
@@ -90,7 +84,7 @@ const display = () => {
             const color = article.dataset.color;
             const index = products.findIndex(item => id === item.id && color === item.color);
             const removedProduct = products.splice(index, 1);
-            //localStorage.setItem('products', JSON.stringify(products));
+            localStorage.setItem('products', JSON.stringify(products));
             calculatePriceAndQuantity();      
           }         
         });
@@ -105,7 +99,6 @@ const calculatePriceAndQuantity = () => {
     totalItems += item.quantity;
     const productWithPrice = productsWithPrice.find(productItem => productItem.id === item.id);
     price += productWithPrice.price * item.quantity;
-    console.log(item.quantity);
   }
   
   document.querySelector("#totalQuantity").innerHTML = totalItems;
@@ -167,9 +160,7 @@ document.querySelector('.cart__order__form').addEventListener('submit', (event) 
     },
     products: productIds
   }
-  console.log(client);
   sendData(client);
-  
 })
   
 //Envoi vers API pour numéro de commande
