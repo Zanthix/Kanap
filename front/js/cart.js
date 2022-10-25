@@ -1,6 +1,9 @@
 //Récupération du local Storage
 let products = JSON.parse(localStorage.getItem("products"));
 console.log(products);
+if(products === null){
+  window.location.replace('index.html');
+}
 const productIds = products.map((product) => product.id);
 console.log(productIds);
 const productsWithPrice = [];
@@ -11,29 +14,30 @@ for (let items of products) {
   totalItems += items.quantity;
 }
 
-//Gestion du panier
+//Initialisation de la variable prix
 let price = 0;
 
+//Affichage du contenu de la page quand tout est chargé
 document.addEventListener("DOMContentLoaded", () => {
   display();
   console.log(price);
 });
 
 
-
+//Affichage de la page panier
 const display = () => {
   let affichage = "";
   let url = `http://localhost:3000/api/products`;
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
+      
       for (let product of data) {
-        if (productIds.find((id) => id === product._id)) {
-          const storedProduct = products.find(
-            (item) => item.id === product._id
-          );
-          productsWithPrice.push({id: product._id, price: product.price});
-          affichage += `<article class="cart__item" data-id="${storedProduct.id}" data-color="${storedProduct.color}">
+        productsWithPrice.push({id: product._id, price: product.price});
+      }
+      for(let storedProduct of products){
+        const product = data.find(item => item._id === storedProduct.id); 
+        affichage += `<article class="cart__item" data-id="${storedProduct.id}" data-color="${storedProduct.color}">
             <div class="cart__item__img">
             <img src="${product.imageUrl}" alt="${product.altTxt}">
             </div>
@@ -55,12 +59,14 @@ const display = () => {
             </div>
             </article>`;
           price += product.price * storedProduct.quantity;
-        }
+          console.log(storedProduct);
       }
       console.log(productsWithPrice);
+      //Injection des différentes variables dans le DOM
       document.querySelector("#totalQuantity").innerHTML = totalItems;
       document.querySelector("#totalPrice").innerHTML = price;
       document.querySelector("#cart__items").innerHTML = affichage;
+      //Détection et changements des quantités des différents articles présents dans le panier
       document.querySelectorAll(".itemQuantity").forEach((input) => {
         input.addEventListener("change", (e) => {
           const newQuantity = parseInt(e.target.value);
@@ -91,11 +97,10 @@ const display = () => {
       });
     });
 };
-
+//Calcul du prix et de la quantité totale des articles présents
 const calculatePriceAndQuantity = () => {
   let totalItems = 0;
   let price = 0;
-  console.log(totalItems);
   for (let item of products) {
     totalItems += item.quantity;
     const productWithPrice = productsWithPrice.find(productItem => productItem.id === item.id);
@@ -149,8 +154,36 @@ document.querySelector("#email").addEventListener("change", () => {
   document.querySelector("#emailErrorMsg").innerHTML = check;
 });
 
-/*document.querySelectorAll('.itemQuantity').forEach(item => {
-      addEventListener('change', (e) => {
-        console.log(e.target.value);
-      })
-    })*/
+//Récupération des infos du client et l'Id des produits choisis
+document.querySelector('.cart__order__form').addEventListener('submit', (event) => {
+  event.preventDefault();
+  const client = {
+    contact: {
+      firstName: document.querySelector('#firstName').value,
+      lastName: document.querySelector('#lastName').value,
+      address: document.querySelector('#address').value,
+      city: document.querySelector('#city').value,
+      email: document.querySelector('#email').value
+    },
+    products: productIds
+  }
+  console.log(client);
+  sendData(client);
+  
+})
+  
+//Envoi vers API pour numéro de commande
+  const sendData = async (client) =>{
+    let promise = fetch("http://localhost:3000/api/products/order", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(client) 
+    });
+    promise.then(response => response.json())
+    .then(data => {
+      window.location.replace("confirmation.html?orderId="+ data.orderId);
+    })
+  }
