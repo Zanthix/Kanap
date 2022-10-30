@@ -27,8 +27,7 @@ const display = () => {
   let url = `http://localhost:3000/api/products`;
   fetch(url)
     .then((response) => response.json())
-    .then((data) => {
-      
+    .then((data) => {     
       for (let product of data) {
         productsWithPrice.push({id: product._id, price: product.price});
       }
