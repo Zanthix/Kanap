@@ -8,8 +8,8 @@ const productsWithPrice = [];
 
 //Comptage du nombre total d'objets
 let totalItems = 0;
-for (let items of products) {
-  totalItems += items.quantity;
+for (let item of products) {
+  totalItems += item.quantity;
 }
 
 //Initialisation de la variable prix
@@ -63,7 +63,10 @@ const display = () => {
       //Détection et changements des quantités des différents articles présents dans le panier
       document.querySelectorAll(".itemQuantity").forEach((input) => {
         input.addEventListener("change", (e) => {
-          const newQuantity = parseInt(e.target.value);
+          if(e.target.value <= 0){
+            e.target.value = 1;
+          }
+          const newQuantity = parseInt(e.target.value);         
           const article = e.target.closest('.cart__item');
           const id = article.dataset.id;
           const color = article.dataset.color;
@@ -84,7 +87,10 @@ const display = () => {
             const index = products.findIndex(item => id === item.id && color === item.color);
             const removedProduct = products.splice(index, 1);
             localStorage.setItem('products', JSON.stringify(products));
-            calculatePriceAndQuantity();      
+            if(products.length === 0){
+              window.location.replace('index.html');
+            }
+            calculatePriceAndQuantity();
           }         
         });
       });
@@ -140,7 +146,7 @@ document.querySelector("#city").addEventListener("change", () => {
 document.querySelector("#email").addEventListener("change", () => {
   let check = "";
   let valeur = document.getElementById("email").value;
-  if (!valeur.match(/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/)) {
+  if (!valeur.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
     check += `Erreur dans l'email`;
   }
   document.querySelector("#emailErrorMsg").innerHTML = check;

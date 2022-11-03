@@ -34,11 +34,21 @@ fetch(url)
       document.querySelector('#description').innerHTML = desc;
       document.querySelector('#colors').innerHTML = option;
       
+      //Sécurité empêchant de rentrer des valeurs négatives ou nulles
+      document.querySelector('#quantity').addEventListener('change', (e) => {
+        if(e.target.value <= 0){
+          e.target.value = 1;
+        }
+      })
+
 
       //Stockage des valeurs indiquées par l'utilisateur lors de "l'ajout au panier"
       document.querySelector('#addToCart').addEventListener('click', () =>{
         const color = getValueFromField('colors');
         const quantity = parseInt(getValueFromField('quantity'));
+        if(quantity <= 0 || color === ""){
+          return(alert("Il manque la quantité d'article ou la couleur voulue"));
+        }
         const product = {id, color, quantity};      
         let products = JSON.parse(localStorage.getItem('products'));
         let index = null;
@@ -58,6 +68,7 @@ fetch(url)
           }
         }
         localStorage.setItem('products', JSON.stringify(products));
+        alert("Ce produit a été ajouté à votre panier.");
       })
   }).catch(error => {console.log(error)});
   
